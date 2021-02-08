@@ -1,5 +1,5 @@
 import socket
-from _thread import *
+import threading
 
 ServerSocket = socket.socket()
 host = '127.0.0.1'
@@ -25,19 +25,22 @@ def threaded_client(connection):
         else:
             connection.sendall("Incorrect User or password!".encode())
     # client_list.append(user.decode())
-    while True: 
-        data = connection.recv(2048)
-        print(str(username.decode()) + " >> " + data.decode())
-        if data.decode() == "q":
-            connection.close()
-            exit()
-        connection.sendall(data)
+    # while True: 
+    #     data = connection.recv(2048)
+    #     print(str(username.decode()) + " >> " + data.decode())
+    #     if data.decode() == "q":
+    #         connection.close()
+    #         exit()
+    #     connection.sendall(data)
+    data = connection.recv(2048)
+    if data.decode() == "1":
+        connection.sendall("Lady Gaga - Bad Romance".encode())
 
 
 while True:
     Client, address = ServerSocket.accept()
     print('Connected to: ' + address[0] + ':' + str(address[1]))
-    start_new_thread(threaded_client, (Client,))
+    threading._start_new_thread(threaded_client, (Client,))
     ThreadCount += 1
     # client_list.append(str(address))
     print('Thread Number: ' + str(ThreadCount))
